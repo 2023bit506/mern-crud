@@ -67,15 +67,17 @@ function Users() {
     const [users, setUsers] = useState([{
         name: "Shubham", email: "sp123@gmail.com", age: 20, city: "Pune", date: "2025-04-16"
     }]);
+    const apiUrl = process.env.REACT_APP_API_URL;
+
 
     useEffect(() => {
-        axios.get('http://localhost:3001')
+        axios.get(`${apiUrl}`)
             .then(result => setUsers(result.data))
             .catch(err => console.log(err));
     }, []);
 
     const handleDelete = (id) => {
-        axios.delete('http://localhost:3001/deleteUser/' + id)
+        axios.delete(`${apiUrl}/deleteUser/` + id)
             .then(res => {
                 console.log(res);
                 window.location.reload();

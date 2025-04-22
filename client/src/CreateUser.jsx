@@ -66,10 +66,11 @@ function CreateUser () {
   const [city, setCity] = useState("");
   const [date, setDate] = useState("");
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const Submit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:3001/createUser", {
+    axios.post(`${apiUrl}/createUser`, {
       name,
       email,
       age,
