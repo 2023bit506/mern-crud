@@ -52,76 +52,109 @@
 // })
 
 
+// const express = require('express');
+// const mongoose = require('mongoose');
+// const cors = require('cors');
+// const UserModel = require('./models/Users');
+
+// const app = express();
+// app.use(cors());
+// app.use(express.json());
+
+// // Connect to MongoDB
+// mongoose.connect("mongodb://127.0.0.1:27017/crud", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// });
+
+// // Get all users
+// app.get('/', (req, res) => {
+//     UserModel.find({})
+//         .then(users => res.json(users))
+//         .catch(err => res.status(500).json(err));
+// });
+
+// // Get user by ID
+// app.get('/getUser/:id', (req, res) => {
+//     const id = req.params.id;
+//     UserModel.findById(id)
+//         .then(user => res.json(user))
+//         .catch(err => res.status(500).json(err));
+// });
+
+// // Update user by ID
+// app.put('/updateUser/:id', (req, res) => {
+//     const id = req.params.id;
+//     const { name, email, age, city, date } = req.body;
+
+//     UserModel.findByIdAndUpdate(id, {
+//         name,
+//         email,
+//         age,
+//         city,
+//         date
+//     }, { new: true })
+//         .then(updatedUser => res.json(updatedUser))
+//         .catch(err => res.status(500).json(err));
+// });
+
+// // Delete user by ID
+// app.delete('/deleteUser/:id', (req, res) => {
+//     const id = req.params.id;
+//     UserModel.findByIdAndDelete(id)
+//         .then(() => res.json({ message: "User deleted successfully" }))
+//         .catch(err => res.status(500).json(err));
+// });
+
+// // Create new user
+// app.post("/createUser", (req, res) => {
+//     const { name, email, age, city, date } = req.body;
+
+//     UserModel.create({
+//         name,
+//         email,
+//         age,
+//         city,
+//         date
+//     })
+//         .then(newUser => res.json(newUser))
+//         .catch(err => res.status(500).json(err));
+// });
+
+// // Start server
+// app.listen(3001, () => {
+//     console.log("✅ Server is Running on http://localhost:3001");
+// });
+
+
+
+
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const UserModel = require('./models/Users');
 
+require('dotenv').config(); // Load .env variables
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+const PORT = process.env.PORT || 3001;
+const MONGO_URI = process.env.MONGO_URI;
+
 // Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/crud", {
+mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-});
+})
+.then(() => console.log('✅ Connected to MongoDB'))
+.catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Get all users
-app.get('/', (req, res) => {
-    UserModel.find({})
-        .then(users => res.json(users))
-        .catch(err => res.status(500).json(err));
-});
-
-// Get user by ID
-app.get('/getUser/:id', (req, res) => {
-    const id = req.params.id;
-    UserModel.findById(id)
-        .then(user => res.json(user))
-        .catch(err => res.status(500).json(err));
-});
-
-// Update user by ID
-app.put('/updateUser/:id', (req, res) => {
-    const id = req.params.id;
-    const { name, email, age, city, date } = req.body;
-
-    UserModel.findByIdAndUpdate(id, {
-        name,
-        email,
-        age,
-        city,
-        date
-    }, { new: true })
-        .then(updatedUser => res.json(updatedUser))
-        .catch(err => res.status(500).json(err));
-});
-
-// Delete user by ID
-app.delete('/deleteUser/:id', (req, res) => {
-    const id = req.params.id;
-    UserModel.findByIdAndDelete(id)
-        .then(() => res.json({ message: "User deleted successfully" }))
-        .catch(err => res.status(500).json(err));
-});
-
-// Create new user
-app.post("/createUser", (req, res) => {
-    const { name, email, age, city, date } = req.body;
-
-    UserModel.create({
-        name,
-        email,
-        age,
-        city,
-        date
-    })
-        .then(newUser => res.json(newUser))
-        .catch(err => res.status(500).json(err));
-});
+// ... (Your routes here)
 
 // Start server
-app.listen(3001, () => {
-    console.log("✅ Server is Running on http://localhost:3001");
+app.listen(PORT, () => {
+    console.log(`✅ Server is Running on http://localhost:${PORT}`);
 });
